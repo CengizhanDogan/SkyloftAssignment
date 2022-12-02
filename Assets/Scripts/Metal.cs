@@ -29,7 +29,7 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
         stackManager.CollectMetal(this);
         spawnPoint.SetMetal(null);
     }
-    public IEnumerator CollectMovement(Transform stackTransform, List<Transform> splineTransforms, 
+    public IEnumerator CollectMovement(Transform stackTransform, List<Transform> splineTransforms,
         float stackDistance, int stackCount, Transform parent)
     {
         transform.DORotate(stackTransform.eulerAngles, 0.25f);
@@ -41,10 +41,8 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
         Transform splineTransform = splineTransforms[Random.Range(0, splineTransforms.Count)];
 
         Vector3 a = transform.position;
-        Vector3 ab = new Vector3();
-        Vector3 bc = new Vector3();
 
-        while (Vector3.Distance(transform.position, stackPos) >= .1f)
+        while (interpolateAmount < 0.975)
         {
             Vector3 b = splineTransform.position;
             Vector3 c = stackPos;
@@ -52,8 +50,8 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
             stackPos = stackTransform.position + Vector3.up * stackCount * stackDistance;
 
             interpolateAmount = (interpolateAmount + Time.deltaTime) % 1f;
-            ab = Vector3.Lerp(a, b, interpolateAmount);
-            bc = Vector3.Lerp(b, c, interpolateAmount);
+            Vector3 ab = Vector3.Lerp(a, b, interpolateAmount);
+            Vector3 bc = Vector3.Lerp(b, c, interpolateAmount);
             transform.position = Vector3.Lerp(ab, bc, interpolateAmount);
             yield return null;
         }

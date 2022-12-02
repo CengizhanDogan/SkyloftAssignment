@@ -1006,6 +1006,10 @@ PrefabInstance:
       value: 3.75
       objectReference: {fileID: 0}
     - target: {fileID: 919132148221685138, guid: 91ac1403019de2c42a54414145ae8f9c, type: 3}
+      propertyPath: stackCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132148221685138, guid: 91ac1403019de2c42a54414145ae8f9c, type: 3}
       propertyPath: splineTransforms.Array.size
       value: 2
       objectReference: {fileID: 0}
