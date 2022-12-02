@@ -28,10 +28,21 @@ public class JoystickMovement : MonoBehaviour
 
     public void Movement(float moveSpeed, float turnSpeed, Transform transform)
     {
+        Movement(moveSpeed, turnSpeed, transform, null);  
+    }
+    public void Movement(float moveSpeed, float turnSpeed, Transform transform, Animator anim)
+    {
         float horizontal = joystick.Horizontal;
         float vertical = joystick.Vertical;
 
+        if (anim)
+        {
+            var speed = new Vector3(horizontal, 0, vertical).magnitude;
+            anim.SetFloat("Speed", speed);
+        }
+        
         if (horizontal == 0 && vertical == 0) return;
+
 
         Vector3 movePos = new Vector3(horizontal * moveSpeed * Time.deltaTime, 0,
             vertical * moveSpeed * Time.deltaTime);

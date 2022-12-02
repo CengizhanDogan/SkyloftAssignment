@@ -13,6 +13,7 @@ public class MetalSpawner : MonoBehaviour
     [SerializeField] private float xSpacing = 10f;
     [SerializeField] private float zSpacing = 10f;
     [SerializeField] private float spawnTimer;
+
     private WaitForSeconds spawnTime;
 
     private void Start()

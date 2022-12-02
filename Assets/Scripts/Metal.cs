@@ -22,13 +22,16 @@ public class Metal : MonoBehaviour, IInteractable
         stackManager.CollectMetal(this);
         spawnPoint.SetMetal(null);
     }
-    public IEnumerator CollectMovement(Transform stackTransform, Transform splineTransform, float stackDistance, int stackCount, Transform parent)
+    public IEnumerator CollectMovement(Transform stackTransform, List<Transform> splineTransforms, 
+        float stackDistance, int stackCount, Transform parent)
     {
         transform.DORotate(stackTransform.eulerAngles, 0.25f);
 
         var stackPos = stackTransform.position + Vector3.up * stackCount * stackDistance;
 
         float interpolateAmount = 0;
+
+        Transform splineTransform = splineTransforms[Random.Range(0, splineTransforms.Count)];
 
         Vector3 a = transform.position;
         Vector3 ab = new Vector3();

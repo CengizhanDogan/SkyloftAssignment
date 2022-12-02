@@ -8,14 +8,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float turnSpeed;
 
     private JoystickMovement joystickMovement;
+    private Animator anim;
+    private Rigidbody rb;
 
     private void Start()
     {
         joystickMovement = JoystickMovement.Instance;
+        anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        if (joystickMovement != null) joystickMovement.Movement(moveSpeed, turnSpeed, transform);
+        if (joystickMovement != null) joystickMovement.Movement(moveSpeed, turnSpeed, transform, anim);
     }
 }
