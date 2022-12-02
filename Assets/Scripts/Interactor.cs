@@ -10,9 +10,7 @@ public class Interactor : MonoBehaviour
 
         if (interactable != null)
         {
-            var interactor = GetComponent<StackManager>();
-
-            interactable.Interact(ref interactor);
+            interactable.Interact(this);
         }
     }
 
@@ -22,8 +20,7 @@ public class Interactor : MonoBehaviour
 
         if (interactable != null)
         {
-            var interactor = GetComponent<StackManager>();
-            interactable.Interact(ref interactor);
+            interactable.Interact(this);
         }
     }
 }
