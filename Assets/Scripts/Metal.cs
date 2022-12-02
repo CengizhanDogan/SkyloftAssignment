@@ -3,10 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Metal : MonoBehaviour, IInteractable
+public class Metal : MonoBehaviour, IInteractable, IPoolable
 {
     private SpawnPoint spawnPoint;
 
+    public void Pooled()
+    {
+        var scale = transform.localScale;
+        transform.localScale = Vector3.zero;
+
+        transform.DOScale(scale, 0.5f).SetEase(Ease.OutBounce);
+    }
     public void SetSpawnPoint(SpawnPoint spawnPoint)
     {
         this.spawnPoint = spawnPoint;
@@ -55,4 +62,5 @@ public class Metal : MonoBehaviour, IInteractable
         transform.SetParent(parent);
         transform.DOLocalRotate(stackTransform.localEulerAngles, 0.25f);
     }
+
 }

@@ -65,6 +65,10 @@ public class PoolingManager : MonoBehaviour
 
         GameObject objectToSpawn = poolDictionary[tag].Dequeue();
 
+        IPoolable poolable = objectToSpawn.GetComponent<IPoolable>();
+
+        poolable.Pooled();
+
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
