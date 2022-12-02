@@ -1,20 +1,24 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MetalSpawner : MonoBehaviour
 {
-    private List<SpawnPosition> spawnPositions = new List<SpawnPosition>();
+    private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
 
     private PoolingManager poolingManager;
 
+    [SerializeField] private int spawnCount = 100;
     [SerializeField] private Vector3 firstPosition = new Vector3(-50, 2, 15);
     [SerializeField] private float xSpacing = 10f;
     [SerializeField] private float zSpacing = 10f;
     [SerializeField] private float spawnTimer;
+    private WaitForSeconds spawnTime;
 
     private void Start()
     {
         poolingManager = PoolingManager.Instance;
+        spawnTime = new WaitForSeconds(spawnTimer);
 
         SetPositions();
     }
@@ -22,12 +26,12 @@ public class MetalSpawner : MonoBehaviour
     private void SetPositions()
     {
         var xMultiplier = 0f; var zMultiplier = 0f;
-        for (int i = 1; i <= 100; i++)
+        for (int i = 1; i <= spawnCount; i++)
         {
             var offset = new Vector3(xSpacing * xMultiplier, 0, zSpacing * zMultiplier);
             var spawnPos = firstPosition + offset;
 
-            spawnPositions.Add(new SpawnPosition(spawnPos));
+            spawnPoints.Add(new SpawnPoint(spawnPos));
 
             xMultiplier++;
 
@@ -38,15 +42,52 @@ public class MetalSpawner : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < spawnPositions.Count / 4; i++)
+        for (int i = 0; i < spawnPoints.Count; i++)
         {
-            var spawnPos = spawnPositions[Random.Range(0, spawnPositions.Count)];
-            while (spawnPos.GetMetal())
+            var spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+            while (spawnPoint.GetMetal())
             {
-                spawnPos = spawnPositions[Random.Range(0, spawnPositions.Count)];
+                spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
             }
-            var metal = poolingManager.SpawnFromPool("Metal", spawnPos.Position, Quaternion.identity);
-            spawnPos.SetMetal(metal.GetComponent<Metal>());
+
+            var spawnPos = spawnPoint.Position + new Vector3(RandomValue(xSpacing), 0, RandomValue(zSpacing));
+
+            var metalGameObject = poolingManager.SpawnFromPool("Metal", spawnPos, Quaternion.identity);
+            var metal = metalGameObject.GetComponent<Metal>();
+            spawnPoint.SetMetal(metal);
+            metal.SetSpawnPoint(spawnPoint);
+        }
+
+        StartCoroutine(Respawn());
+    }
+
+    private IEnumerator Respawn()
+    {
+        SpawnPoint emptyPoint = null;
+        while (true)
+        {
+            if (emptyPoint == null)
+            {
+                foreach (var spawnPoint in spawnPoints)
+                {
+                    if (spawnPoint.GetMetal()) continue;
+
+                    emptyPoint = spawnPoint;
+                    yield return spawnTime;
+                }
+            }
+            else
+            {
+                var spawnPos = emptyPoint.Position + new Vector3(RandomValue(xSpacing), 0, RandomValue(zSpacing));
+
+                var metalGameObject = poolingManager.SpawnFromPool("Metal", spawnPos, Quaternion.identity);
+                var metal = metalGameObject.GetComponent<Metal>();
+                emptyPoint.SetMetal(metal);
+                metal.SetSpawnPoint(emptyPoint);
+                emptyPoint = null;
+            }
+
+            yield return null;
         }
     }
 
@@ -56,14 +97,14 @@ public class MetalSpawner : MonoBehaviour
     }
 }
 
-public class SpawnPosition
+public class SpawnPoint
 {
     private Vector3 position;
     public Vector3 Position => position;
 
     private Metal metal;
 
-    public SpawnPosition(Vector3 position)
+    public SpawnPoint(Vector3 position)
     {
         this.position = position;
     }
