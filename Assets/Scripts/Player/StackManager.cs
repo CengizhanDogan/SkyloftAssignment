@@ -9,7 +9,7 @@ public class StackManager : MonoBehaviour
 
     [SerializeField] private Transform stackTransform;
     [SerializeField] private List<Transform> splineTransforms = new List<Transform>();
-    [SerializeField] private float stackDistance;
+    [SerializeField] private float stackDistance = 1f;
     [SerializeField] private float stackSpeed = 2f;
     [SerializeField] private int stackCount;
     public int StackCount => metals.Count;

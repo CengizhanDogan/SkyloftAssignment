@@ -6,6 +6,7 @@ public class JoystickMovement : MonoBehaviour
 {
     private FloatingJoystick joystick;
 
+    private float speed;
     #region Singleton
     public static JoystickMovement Instance { get; private set; }
     private void Awake()
@@ -25,7 +26,11 @@ public class JoystickMovement : MonoBehaviour
     {
         joystick = GetComponent<FloatingJoystick>();
     }
-
+    public void Movement(float moveSpeed, float turnSpeed, Transform transform, bool speedUp)
+    {
+        if (speedUp && speed < moveSpeed) speed+= moveSpeed * 1.5f * Time.deltaTime;
+        Movement(speed, turnSpeed, transform, null);
+    }
     public void Movement(float moveSpeed, float turnSpeed, Transform transform)
     {
         Movement(moveSpeed, turnSpeed, transform, null);  
@@ -40,8 +45,8 @@ public class JoystickMovement : MonoBehaviour
             var speed = new Vector3(horizontal, 0, vertical).magnitude;
             anim.SetFloat("Speed", speed);
         }
-        
-        if (horizontal == 0 && vertical == 0) return;
+
+        if (horizontal == 0 && vertical == 0) { speed = 0;  return; }
 
 
         Vector3 movePos = new Vector3(horizontal * moveSpeed * Time.deltaTime, 0,

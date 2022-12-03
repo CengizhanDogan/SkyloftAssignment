@@ -7,7 +7,13 @@ public class Car : MonoBehaviour, IPurchasable
 {
     [SerializeField] private int cost;
 
+    [SerializeField]private Transform driveSeat;
+    public Transform DriveSeat => driveSeat;
     private Vector3 scale;
+
+    private bool isPurchased;
+    public bool IsPurchased => isPurchased;
+
     private void Start()
     {
         scale = transform.localScale;
@@ -20,6 +26,8 @@ public class Car : MonoBehaviour, IPurchasable
 
     public void GetPurchased()
     {
+        isPurchased = true;
         transform.DOScale(scale, 0.5f).SetEase(Ease.OutBounce);
     }
+
 }

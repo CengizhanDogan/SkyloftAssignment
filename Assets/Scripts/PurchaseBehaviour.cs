@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,9 @@ public class PurchaseBehaviour : MonoBehaviour, IInteractable, IExitable
 
     [SerializeField] private TextMeshProUGUI costTextMesh;
     [SerializeField] private Image fillImage;
-    [SerializeField] private GameObject purchaseObject;
+    [SerializeField] private List<GameObject> purchaseObjects = new List<GameObject>();
 
-    private IPurchasable purchasable;
+    private List<IPurchasable> purchasables = new List<IPurchasable>();
 
     private int purchaseCost;
     private int startCost;
@@ -22,7 +23,7 @@ public class PurchaseBehaviour : MonoBehaviour, IInteractable, IExitable
     {
         GetPurchasable();
 
-        purchaseCost = purchasable.GetCost();
+        purchaseCost = purchasables[0].GetCost();
         startCost = purchaseCost;
 
         costTextMesh.text = purchaseCost.ToString();
@@ -30,13 +31,16 @@ public class PurchaseBehaviour : MonoBehaviour, IInteractable, IExitable
 
     private void GetPurchasable()
     {
-        if (purchaseObject.TryGetComponent(out IPurchasable purchasable))
+        foreach (var purchaseObject in purchaseObjects)
         {
-            this.purchasable = purchasable;
-        }
-        else
-        {
-            Debug.LogError($"Object {purchaseObject} has not a script that has IPurchasable interface on it!", this);
+            if (purchaseObject.TryGetComponent(out IPurchasable purchasable))
+            {
+                purchasables.Add(purchasable);
+            }
+            else
+            {
+                Debug.LogError($"Object {purchaseObject} has not a script that has IPurchasable interface on it!", this);
+            }
         }
     }
 
@@ -44,7 +48,7 @@ public class PurchaseBehaviour : MonoBehaviour, IInteractable, IExitable
     {
         var stackManager = interactor.GetComponent<StackManager>();
 
-        if (!stackManager && purchasable == null) return;
+        if (!stackManager && purchasables.Count == 0) return;
         exited = false;
         StartCoroutine(SpendMetalToPurchase(stackManager));
     }
@@ -60,14 +64,14 @@ public class PurchaseBehaviour : MonoBehaviour, IInteractable, IExitable
                 purchaseCost -= 1;
                 fillCount++;
                 costTextMesh.text = purchaseCost.ToString();
-                Debug.Log("FillCount: " + fillCount);
-                Debug.Log("Value: " + fillCount / startCost);
-                Debug.Log("Amount: " + fillImage.fillAmount);
                 DOTween.To(() => fillImage.fillAmount, x => fillImage.fillAmount = x, fillCount / startCost, 0.25f);
             }
             if (purchaseCost <= 0)
             {
-                purchasable.GetPurchased();
+                foreach (var purchasable in purchasables)
+                {
+                    purchasable.GetPurchased();
+                }
                 gameObject.SetActive(false);
                 DOTween.To(() => fillImage.fillAmount, x => fillImage.fillAmount = x, 1, 0.25f);
                 yield break;

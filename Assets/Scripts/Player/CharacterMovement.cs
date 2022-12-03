@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class CharacterMovement : Movement
 {
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float turnSpeed;
-
-    private JoystickMovement joystickMovement;
     private Animator anim;
 
-    private void Start()
+    private void Awake()
     {
-        joystickMovement = JoystickMovement.Instance;
         anim = GetComponent<Animator>();
     }
 
