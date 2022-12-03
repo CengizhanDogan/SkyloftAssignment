@@ -26,14 +26,14 @@ public class JoystickMovement : MonoBehaviour
     {
         joystick = GetComponent<FloatingJoystick>();
     }
+    public void Movement(float moveSpeed, float turnSpeed, Transform transform)
+    {
+        Movement(moveSpeed, turnSpeed, transform, null);  
+    }
     public void Movement(float moveSpeed, float turnSpeed, Transform transform, bool speedUp)
     {
         if (speedUp && speed < moveSpeed) speed+= moveSpeed * 1.5f * Time.deltaTime;
         Movement(speed, turnSpeed, transform, null);
-    }
-    public void Movement(float moveSpeed, float turnSpeed, Transform transform)
-    {
-        Movement(moveSpeed, turnSpeed, transform, null);  
     }
     public void Movement(float moveSpeed, float turnSpeed, Transform transform, Animator anim)
     {
@@ -53,7 +53,7 @@ public class JoystickMovement : MonoBehaviour
             vertical * moveSpeed * Time.deltaTime);
         transform.position += movePos;
 
-        Vector3 direction = Vector3.forward * vertical + Vector3.right * horizontal;
+        Vector3 direction = (Vector3.forward * vertical + Vector3.right * horizontal);
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
     }
 }

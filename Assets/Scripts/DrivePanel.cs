@@ -28,7 +28,7 @@ public class DrivePanel : MonoBehaviour, IPurchasable, IInteractable
     {
         coll.enabled = false;
 
-        EventManager.OnDriveEvent.Invoke(car.transform, 60f);
+        EventManager.OnDriveEvent.Invoke(car.transform, 75f);
 
         interactor.GetComponent<Collider>().enabled = false;
 

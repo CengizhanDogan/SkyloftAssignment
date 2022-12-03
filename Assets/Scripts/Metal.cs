@@ -41,12 +41,9 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
         coll.enabled = false;
     }
     public IEnumerator MetalMovement(Transform lastTransform, List<Transform> splineTransforms,
-        float stackDistance, int stackCount, Transform parent, float stackSpeed,bool isSpend)
+        float stackDistance, int stackCount, Transform parent, float stackSpeed, bool isSpend)
     {
         transform.DORotate(lastTransform.eulerAngles, 0.25f);
-
-        var lastPos = lastTransform.position + Vector3.up * stackCount * stackDistance;
-        if (isSpend) lastPos = lastTransform.position;
 
         float interpolateAmount = 0;
 
@@ -57,10 +54,7 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
         while (interpolateAmount < 0.975)
         {
             Vector3 b = splineTransform.position;
-            Vector3 c = lastPos;
-
-            lastPos = lastTransform.position + Vector3.up * stackCount * stackDistance;
-            if (isSpend) lastPos = lastTransform.position;
+            Vector3 c = LastPosition(lastTransform, stackCount, stackDistance, isSpend);
 
             interpolateAmount = (interpolateAmount + Time.deltaTime * stackSpeed) % 1f;
             Vector3 ab = Vector3.Lerp(a, b, interpolateAmount);
@@ -71,10 +65,24 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
 
         PoolingManager poolingManager = PoolingManager.Instance;
 
-        transform.position = lastPos;
+        transform.position = LastPosition(lastTransform, stackCount, stackDistance, isSpend);
         if (!isSpend) transform.SetParent(parent);
         else transform.SetParent(poolingManager.transform);
         if (!isSpend) transform.DOLocalRotate(lastTransform.localEulerAngles, 0.25f);
         else transform.DOScale(0, 0.25f).OnComplete(() => poolingManager.DestroyPoolObject(gameObject));
+    }
+
+    private Vector3 LastPosition(Transform lastTransform, int stackCount, float stackDistance, bool isSpend)
+    {
+        var lastPos = lastTransform.position + Vector3.up * stackCount * stackDistance;
+        if (isSpend) lastPos = lastTransform.position;
+        else if (stackCount >= 5)
+        {
+            var zStack = Mathf.Floor((stackCount - 1) / 5f);
+
+            lastPos = lastTransform.position + Vector3.up * (stackCount - (zStack * 5)) * stackDistance - lastTransform.forward * zStack * stackDistance;
+        }
+
+        return lastPos;
     }
 }
