@@ -13,6 +13,15 @@ public class Interactor : MonoBehaviour
             interactable.Interact(this);
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        IExitable exitable = other.GetComponent<IExitable>();
+
+        if (exitable != null)
+        {
+            exitable.Exit();
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -21,6 +30,15 @@ public class Interactor : MonoBehaviour
         if (interactable != null)
         {
             interactable.Interact(this);
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        IExitable exitable = collision.gameObject.GetComponent<IExitable>();
+
+        if (exitable != null)
+        {
+            exitable.Exit();
         }
     }
 }

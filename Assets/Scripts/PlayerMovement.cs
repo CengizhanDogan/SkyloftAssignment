@@ -9,13 +9,11 @@ public class PlayerMovement : MonoBehaviour
 
     private JoystickMovement joystickMovement;
     private Animator anim;
-    private Rigidbody rb;
 
     private void Start()
     {
         joystickMovement = JoystickMovement.Instance;
         anim = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()

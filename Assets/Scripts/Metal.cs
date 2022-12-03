@@ -7,12 +7,22 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
 {
     private SpawnPoint spawnPoint;
 
+    [SerializeField] private Collider coll;
+    private Vector3 scale;
+
+    private bool getOnce;
     public void Pooled()
     {
-        var scale = transform.localScale;
+        if (!getOnce)
+        {
+            getOnce = true;
+            coll = GetComponent<Collider>();
+            scale = transform.localScale;
+        }
+
         transform.localScale = Vector3.zero;
 
-        transform.DOScale(scale, 0.5f).SetEase(Ease.OutBounce);
+        transform.DOScale(scale, 0.5f).SetEase(Ease.OutBounce).OnComplete(() => coll.enabled = true);
     }
     public void SetSpawnPoint(SpawnPoint spawnPoint)
     {
@@ -24,17 +34,19 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
     }
     public void Interact(Interactor interactor)
     {
-        GetComponent<Collider>().enabled = false;
         var stackManager = interactor.GetComponent<StackManager>();
+        if (stackManager.StackIsFull) return;
         stackManager.CollectMetal(this);
         spawnPoint.SetMetal(null);
+        coll.enabled = false;
     }
-    public IEnumerator CollectMovement(Transform stackTransform, List<Transform> splineTransforms,
-        float stackDistance, int stackCount, Transform parent)
+    public IEnumerator MetalMovement(Transform lastTransform, List<Transform> splineTransforms,
+        float stackDistance, int stackCount, Transform parent, float stackSpeed,bool isSpend)
     {
-        transform.DORotate(stackTransform.eulerAngles, 0.25f);
+        transform.DORotate(lastTransform.eulerAngles, 0.25f);
 
-        var stackPos = stackTransform.position + Vector3.up * stackCount * stackDistance;
+        var lastPos = lastTransform.position + Vector3.up * stackCount * stackDistance;
+        if (isSpend) lastPos = lastTransform.position;
 
         float interpolateAmount = 0;
 
@@ -45,20 +57,24 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
         while (interpolateAmount < 0.975)
         {
             Vector3 b = splineTransform.position;
-            Vector3 c = stackPos;
+            Vector3 c = lastPos;
 
-            stackPos = stackTransform.position + Vector3.up * stackCount * stackDistance;
+            lastPos = lastTransform.position + Vector3.up * stackCount * stackDistance;
+            if (isSpend) lastPos = lastTransform.position;
 
-            interpolateAmount = (interpolateAmount + Time.deltaTime) % 1f;
+            interpolateAmount = (interpolateAmount + Time.deltaTime * stackSpeed) % 1f;
             Vector3 ab = Vector3.Lerp(a, b, interpolateAmount);
             Vector3 bc = Vector3.Lerp(b, c, interpolateAmount);
             transform.position = Vector3.Lerp(ab, bc, interpolateAmount);
             yield return null;
         }
 
-        transform.position = stackPos;
-        transform.SetParent(parent);
-        transform.DOLocalRotate(stackTransform.localEulerAngles, 0.25f);
-    }
+        PoolingManager poolingManager = PoolingManager.Instance;
 
+        transform.position = lastPos;
+        if (!isSpend) transform.SetParent(parent);
+        else transform.SetParent(poolingManager.transform);
+        if (!isSpend) transform.DOLocalRotate(lastTransform.localEulerAngles, 0.25f);
+        else transform.DOScale(0, 0.25f).OnComplete(() => poolingManager.DestroyPoolObject(gameObject));
+    }
 }
