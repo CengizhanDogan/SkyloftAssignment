@@ -46,6 +46,7 @@ public class Car : MonoBehaviour, IPurchasable
     public void GetPurchased()
     {
         isPurchased = true;
+        rb.isKinematic = false;
         transform.DOScale(scale, 0.5f).SetEase(Ease.OutBounce).OnComplete(() => coll.enabled = true);
     }
 

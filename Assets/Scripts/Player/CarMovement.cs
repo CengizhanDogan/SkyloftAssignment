@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,11 @@ public class CarMovement : Movement
     }
     private void Update()
     {
+        MoveCar();
+    }
+
+    private void MoveCar()
+    {
         if (joystick != null && car.IsPurchased && haveDriver)
         {
             float x = joystick.HorizontalInput;
@@ -53,14 +59,19 @@ public class CarMovement : Movement
             Vector3 direction = (Vector3.forward * z + Vector3.right * x);
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime * speed);
 
-            foreach (var frontWheel in frontWheels)
-            {
-                frontWheel.rotation = Quaternion.Slerp(frontWheel.rotation, Quaternion.LookRotation(direction), turnSpeed * 2 * Time.deltaTime * speed);
-            }
-            foreach (var wheel in wheels)
-            {
-                wheel.Rotate(Vector3.right * turnSpeed * 200 * Time.deltaTime * speed);
-            }
+            RotateWheels(direction , speed);
+        }
+    }
+
+    private void RotateWheels(Vector3 direction, float speed) 
+    {
+        foreach (var frontWheel in frontWheels)
+        {
+            frontWheel.rotation = Quaternion.Slerp(frontWheel.rotation, Quaternion.LookRotation(direction), turnSpeed * 2 * Time.deltaTime * speed);
+        }
+        foreach (var wheel in wheels)
+        {
+            wheel.Rotate(Vector3.right * turnSpeed * 200 * Time.deltaTime * speed);
         }
     }
 }

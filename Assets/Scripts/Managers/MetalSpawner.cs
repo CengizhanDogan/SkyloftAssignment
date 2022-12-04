@@ -54,7 +54,7 @@ public class MetalSpawner : MonoBehaviour
 
             var spawnPos = spawnPoint.Position + new Vector3(RandomValue(xSpacing), 0, RandomValue(zSpacing));
 
-            var metalGameObject = poolingManager.SpawnFromPool("Metal", spawnPos, Quaternion.identity);
+            var metalGameObject = poolingManager.InstantiateFromPool("Metal", spawnPos, Quaternion.identity);
             var metal = metalGameObject.GetComponent<Metal>();
             spawnPoint.SetMetal(metal);
             metal.SetSpawnPoint(spawnPoint);
@@ -81,7 +81,7 @@ public class MetalSpawner : MonoBehaviour
             {
                 var spawnPos = emptyPoint.Position + new Vector3(RandomValue(xSpacing), 0, RandomValue(zSpacing));
 
-                var metalGameObject = poolingManager.SpawnFromPool("Metal", spawnPos, Quaternion.identity);
+                var metalGameObject = poolingManager.InstantiateFromPool("Metal", spawnPos, Quaternion.identity);
                 var metal = metalGameObject.GetComponent<Metal>();
                 emptyPoint.SetMetal(metal);
                 metal.SetSpawnPoint(emptyPoint);

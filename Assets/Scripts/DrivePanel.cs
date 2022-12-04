@@ -34,7 +34,6 @@ public class DrivePanel : MonoBehaviour, IPurchasable, IInteractable
 
         character.StackManager.TransferMetal(car.StackManager);
 
-
         car.SetDriver(character);
 
         character.Rb.isKinematic = true;
@@ -49,6 +48,5 @@ public class DrivePanel : MonoBehaviour, IPurchasable, IInteractable
 
         character.transform.DORotate(car.DriveSeat.eulerAngles, 0.5f);
         character.transform.DOScale(0, 0.75f);
-
     }
 }
