@@ -74,13 +74,15 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
 
     private Vector3 LastPosition(Transform lastTransform, int stackCount, float stackDistance, bool isSpend)
     {
-        var lastPos = lastTransform.position + Vector3.up * stackCount * stackDistance;
+        var upTransform = lastTransform.GetChild(0);
+
+        var lastPos = lastTransform.position + upTransform.up * stackCount * stackDistance;
         if (isSpend) lastPos = lastTransform.position;
         else if (stackCount >= 5)
         {
             var zStack = Mathf.Floor((stackCount - 1) / 5f);
 
-            lastPos = lastTransform.position + Vector3.up * (stackCount - (zStack * 5)) * stackDistance - lastTransform.forward * zStack * stackDistance;
+            lastPos = lastTransform.position + upTransform.up * (stackCount - (zStack * 5)) * stackDistance - lastTransform.forward * zStack * stackDistance;
         }
 
         return lastPos;

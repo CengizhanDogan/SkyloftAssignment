@@ -12,6 +12,7 @@ public class MetalSpawner : MonoBehaviour
     [SerializeField] private Vector3 firstPosition = new Vector3(-50, 2, 15);
     [SerializeField] private float xSpacing = 10f;
     [SerializeField] private float zSpacing = 10f;
+    [SerializeField] private int line = 10;
     [SerializeField] private float spawnTimer;
 
     private WaitForSeconds spawnTime;
@@ -36,7 +37,7 @@ public class MetalSpawner : MonoBehaviour
 
             xMultiplier++;
 
-            if (i % 10 == 0)
+            if (i % line == 0)
             {
                 zMultiplier++;
                 xMultiplier = 0f;

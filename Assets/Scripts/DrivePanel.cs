@@ -44,7 +44,7 @@ public class DrivePanel : MonoBehaviour, IPurchasable, IInteractable
             .OnComplete(()=> 
             {
                 interactor.transform.SetParent(car.DriveSeat);
-                EventManager.OnDriveEvent.Invoke(car.transform, 75f);
+                EventManager.OnDriveEvent.Invoke(car.transform, 85f);
             });
 
         character.transform.DORotate(car.DriveSeat.eulerAngles, 0.5f);
