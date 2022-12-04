@@ -7,10 +7,10 @@ public class Movement : MonoBehaviour
     [SerializeField] protected float moveSpeed;
     [SerializeField] protected float turnSpeed;
 
-    protected JoystickMovement joystickMovement;
+    protected JoystickInput joystick;
 
     private void Start()
     {
-        joystickMovement = JoystickMovement.Instance;
+        joystick = JoystickInput.Instance;
     }
 }

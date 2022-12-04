@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106947025}
   m_LocalRotation: {x: -0, y: -0, z: 0.50000054, w: 0.86602515}
-  m_LocalPosition: {x: 0, y: 2.5, z: -1.25}
+  m_LocalPosition: {x: 0, y: 2.5, z: -1.069}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1734492706252009898}
@@ -84,7 +84,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365797843}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.75, y: 6.5, z: 0}
+  m_LocalPosition: {x: 3.75, y: 6.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1734492706252009898}
@@ -196,6 +196,7 @@ GameObject:
   - component: {fileID: 1734492706252009898}
   - component: {fileID: 919132148221685139}
   - component: {fileID: 919132148221685140}
+  - component: {fileID: 1628067030252605332}
   - component: {fileID: 919132148221685137}
   - component: {fileID: 919132148221685138}
   - component: {fileID: 919132148221685141}
@@ -240,7 +241,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &919132148221685140
 CapsuleCollider:
@@ -256,6 +257,18 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 1
   m_Center: {x: 0, y: 2.45, z: 0}
+--- !u!114 &1628067030252605332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394417421130427152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84425d3e77596b14d8381059c19b7e4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &919132148221685137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,8 +296,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stackTransform: {fileID: 106947026}
-  splineTransform: {fileID: 186305144}
+  splineTransforms:
+  - {fileID: 186305144}
+  - {fileID: 365797844}
   stackDistance: 1
+  stackSpeed: 2
   stackCount: 5
 --- !u!114 &919132148221685141
 MonoBehaviour:
@@ -308,7 +324,7 @@ Animator:
   m_GameObject: {fileID: 1394417421130427152}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5807aa100cf693b46afea1e6ffc3db0b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

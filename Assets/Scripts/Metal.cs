@@ -51,7 +51,7 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
 
         Vector3 a = transform.position;
 
-        while (interpolateAmount < 0.975)
+        while (interpolateAmount < 0.9)
         {
             Vector3 b = splineTransform.position;
             Vector3 c = LastPosition(lastTransform, stackCount, stackDistance, isSpend);
