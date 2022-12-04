@@ -75,7 +75,6 @@ public class MetalSpawner : MonoBehaviour
                     if (spawnPoint.GetMetal()) continue;
 
                     emptyPoint = spawnPoint;
-                    yield return spawnTime;
                 }
             }
             else
@@ -89,7 +88,7 @@ public class MetalSpawner : MonoBehaviour
                 emptyPoint = null;
             }
 
-            yield return null;
+            yield return spawnTime;
         }
     }
 

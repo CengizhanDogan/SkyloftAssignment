@@ -61,7 +61,7 @@ public class Car : MonoBehaviour, IPurchasable
             transform.eulerAngles = startRot;
             transform.DOScale(scale, 0.5f).SetEase(Ease.OutBounce).OnComplete(() =>
             {
-                rb.isKinematic = true;
+                rb.isKinematic = false;
                 coll.enabled = true;
             });
         });
