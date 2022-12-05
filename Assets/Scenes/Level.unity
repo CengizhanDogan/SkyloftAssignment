@@ -1049,7 +1049,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7167639981842826193, guid: 4f41282fc051bff4ba6ebd90f49f0d48, type: 3}
       propertyPath: m_text
-      value: 'Thrash Can
+      value: 'Trash Can
 
 '
       objectReference: {fileID: 0}

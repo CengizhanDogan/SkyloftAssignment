@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrashCan : MonoBehaviour, IUnlockable
+public class TrashCan : MonoBehaviour, IUnlockable
 {
     //Created for testing. You can spend your collected metals here.
     [SerializeField] private int cost = 999;
@@ -11,8 +11,5 @@ public class ThrashCan : MonoBehaviour, IUnlockable
         return cost;
     }
 
-    public void GetUnlocked()
-    {
-
-    }
+    public void GetUnlocked() { }
 }
