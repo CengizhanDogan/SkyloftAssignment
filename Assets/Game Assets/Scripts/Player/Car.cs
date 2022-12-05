@@ -9,6 +9,8 @@ public class Car : MonoBehaviour, IUnlockable, IDriveable
 
     [SerializeField] private Transform driveSeat;
 
+    [SerializeField] private List<TrailRenderer> trails;
+
     private Character driver;
     private Collider coll;
     private Rigidbody rb;
@@ -53,6 +55,7 @@ public class Car : MonoBehaviour, IUnlockable, IDriveable
         //Sends car to first position.
         stackManager.TransferMetal(driver.StackManager);
 
+        SetTrails(false);
         rb.isKinematic = true;
         coll.enabled = false;
         transform.DOScale(0, 0.25f).OnComplete(() =>
@@ -63,8 +66,17 @@ public class Car : MonoBehaviour, IUnlockable, IDriveable
             {
                 rb.isKinematic = false;
                 coll.enabled = true;
+                SetTrails(true);
             });
         });
+    }
+
+    private void SetTrails(bool set)
+    {
+        foreach (var trail in trails)
+        {
+            trail.enabled = set;
+        }
     }
     public void SetDriver(Character character)
     {

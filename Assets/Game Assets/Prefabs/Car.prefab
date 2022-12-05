@@ -802,8 +802,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212c5f2cf46cd8c44b39e83e4032cc99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 0
+  cost: 20
   driveSeat: {fileID: 509735432}
+  trails:
+  - {fileID: 3466848213861707090}
+  - {fileID: 1992177808486261702}
 --- !u!114 &6505439777232415626
 MonoBehaviour:
   m_ObjectHideFlags: 0
