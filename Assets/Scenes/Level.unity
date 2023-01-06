@@ -1538,7 +1538,7 @@ MonoBehaviour:
   pools:
   - tag: Metal
     gameObject: {fileID: 7342435928662410005, guid: 8487135e5e0dfcf49aa43e9578e1920c, type: 3}
-    size: 500
+    size: 2
   - tag: WalkParticle
     gameObject: {fileID: 4850734791973649266, guid: f5315e0b2bf3c2349a663763e4058480, type: 3}
     size: 2

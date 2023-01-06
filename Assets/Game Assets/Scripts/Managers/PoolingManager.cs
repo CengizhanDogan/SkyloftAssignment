@@ -57,7 +57,7 @@ public class PoolingManager : MonoBehaviour
         }
     }
 
-    public GameObject InstantiateFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject InstantiateFromPool(string tag, Vector3 position, Quaternion rotation, bool willDestroy)
     {
         //Finds objects queue from given tag.
 
@@ -69,7 +69,25 @@ public class PoolingManager : MonoBehaviour
 
         //Dequeues the objects and enqueues later to reorder the queue.
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        GameObject objectToSpawn = null;
+
+        if (poolDictionary[tag].Count == 0 && willDestroy)
+        {
+            Pool pool = null;
+
+            foreach (var item in pools)
+            {
+                if (item.tag == tag) pool = item;
+            }
+
+            pool.size++;
+
+            GameObject obj = Instantiate(pool.gameObject, transform);
+            poolDictionary[tag].Enqueue(obj);
+            obj.SetActive(false);
+        }
+
+        objectToSpawn = poolDictionary[tag].Dequeue();
 
         IPoolable poolable = objectToSpawn.GetComponent<IPoolable>();
 
@@ -79,12 +97,14 @@ public class PoolingManager : MonoBehaviour
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        if(!willDestroy) poolDictionary[tag].Enqueue(objectToSpawn);
+
         return objectToSpawn;
     }
 
-    public void DestroyPoolObject(GameObject destroyObject)
+    public void DestroyPoolObject(string tag, GameObject destroyObject)
     {
+        poolDictionary[tag].Enqueue(destroyObject);
         destroyObject.SetActive(false);
     }
 }

@@ -73,7 +73,7 @@ public class Metal : MonoBehaviour, IInteractable, IPoolable
         if (!isSpend) transform.SetParent(parent);
         else transform.SetParent(poolingManager.transform);
         if (!isSpend) transform.DOLocalRotate(lastTransform.localEulerAngles, 0.25f);
-        else transform.DOScale(0, 0.25f).OnComplete(() => poolingManager.DestroyPoolObject(gameObject));
+        else transform.DOScale(0, 0.25f).OnComplete(() => poolingManager.DestroyPoolObject("Metal", gameObject));
     }
 
     private Vector3 StackPosition(Transform lastTransform, int stackCount, float stackDistance, bool isSpend)

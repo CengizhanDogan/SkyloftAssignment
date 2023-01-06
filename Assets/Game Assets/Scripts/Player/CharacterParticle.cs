@@ -19,11 +19,11 @@ public class CharacterParticle : MonoBehaviour
     public void LeftParticle()
     {
         if (!coll.enabled) return;
-        poolingManager.InstantiateFromPool("WalkParticle", leftParticleTransform.position, leftParticleTransform.rotation);
+        poolingManager.InstantiateFromPool("WalkParticle", leftParticleTransform.position, leftParticleTransform.rotation, false);
     }
     public void RightParticle()
     {
         if (!coll.enabled) return;
-        poolingManager.InstantiateFromPool("WalkParticle", rightParticleTransform.position, rightParticleTransform.rotation);
+        poolingManager.InstantiateFromPool("WalkParticle", rightParticleTransform.position, rightParticleTransform.rotation, false);
     }
 }
